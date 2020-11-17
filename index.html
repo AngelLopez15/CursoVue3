@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
   <script src="https://unpkg.com/vue@next"></script>
   <title>Vue 3</title>
 </head>
@@ -31,10 +32,63 @@
       Cantidad: <span style="color:red">{{cantidad}}</span>
     </h2>
     <h2 v-else>Sin saldo: {{cantidad}}</h2>
+
+    <hr>
+
+    <!-- v-for para iterar objetos y arreglos -->
+    <h2>Mis servicios disponibles</h2>
+    <ul>
+      <!-- como se necesita un index y en este caso en particular no tenemos un id unico
+      podemos ocupar el index de cada elemento en el arreglo para usarlo como Key o Id -->
+      <li v-for="(item, index) in servicios" :key="index">{{item}}</li>
+    </ul>
+
+    <hr>
+    <!-- v-on: agregamos eventos. En este caso estamos usando el click -->
+    <button v-on:click="agregarSaldo">Agregar Saldo</button>
+    <!-- podemo abreviar el evento con un @ -->
+    <!-- para desactivar un boton ocupamos el v-bind -->
+    <button @click="quitarSaldo" :disabled="desactivar">Quitar Saldo</button>
+    <button @click="resetearSaldo">Resetear Saldo</button>
+    <hr>
+    <button @click="disminuirCantidad(500)" :disabled="desactivar">Disminuir Saldo</button>
+
+    <hr>
+    <!-- clases dinamicas -->
+    <!-- Para hacer las validaciones siempre hay que usar los corchetes -->
+    <h2
+      :class="[cantidad > 500 ? 'text-green' : 'text-red']"
+    >Mi saldo disponible es: {{cantidad}}</h2>
+
+    <!-- Propiedades computadas (computed)-->
+    <!-- LAs propiedades computadas nos sirven paragenerar calculos en nuestros componentes -->
+    <!-- No se recomienda poner demasiado logica en nuestras plantillas HTMl ya que dificulta la 
+    implementación de nuestros componentes -->
+
+      <h2
+      :class="colorCantidad"
+      >Mi saldo disponible es: {{cantidad}}</h2>
+
+      <!-- Componentes -->
+      <!-- debemos llamar los componentes con el nombre que le pusimos y con sus
+      etiquetas de apertura y cierre o con un autocierre-->
+      <!-- Los nombres de los componentes no puedenir en mayusculas -->
+      <mifooter></mifooter>
+      <!-- <mifooter />
+      <mifooter /> -->
+      <footerdata
+        :cantidad="cantidad"
+        valor=1000
+        fecha="Noviembre 2020"
+      />
   </div>
 
   <!-- el scrip main siempre debe estar por encima del scrip de mountedApp -->
   <script src="main.js"></script>
+  <!-- Los script de los componentes deben ir despues del main por que estamos usando el app
+  y antes del mountedApp -->
+  <script src="/components/Footer.js"></script>
+  <script src="/components/FooterData.js"></script>
   <!-- para poder llamar el scrip de vue debemos poner este scrip -->
   <script>
     const mountedApp = app.mount('#app')
